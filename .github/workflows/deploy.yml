@@ -19,6 +19,29 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         
+    - name: Create Maven settings.xml
+      run: |
+        mkdir -p ~/.m2
+        cat > ~/.m2/settings.xml << 'EOF'
+        <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+                                      https://maven.apache.org/xsd/settings-1.0.0.xsd">
+          <servers>
+            <server>
+              <id>anypoint-exchange-v3</id>
+              <username>${{ secrets.ANYPOINT_USERNAME }}</username>
+              <password>${{ secrets.ANYPOINT_PASSWORD }}</password>
+            </server>
+            <server>
+              <id>mulesoft-releases</id>
+              <username>${{ secrets.ANYPOINT_USERNAME }}</username>
+              <password>${{ secrets.ANYPOINT_PASSWORD }}</password>
+            </server>
+          </servers>
+        </settings>
+        EOF
+        
     - name: Cache Maven dependencies
       uses: actions/cache@v3
       with:
@@ -28,6 +51,9 @@ jobs:
         
     - name: Build application
       run: mvn clean package
+      env:
+        ANYPOINT_USERNAME: ${{ secrets.ANYPOINT_USERNAME }}
+        ANYPOINT_PASSWORD: ${{ secrets.ANYPOINT_PASSWORD }}
       
     - name: Deploy to CloudHub
       run: |
@@ -43,3 +69,5 @@ jobs:
       env:
         ANYPOINT_CLIENT_ID: ${{ secrets.ANYPOINT_CLIENT_ID }}
         ANYPOINT_CLIENT_SECRET: ${{ secrets.ANYPOINT_CLIENT_SECRET }}
+        ANYPOINT_USERNAME: ${{ secrets.ANYPOINT_USERNAME }}
+        ANYPOINT_PASSWORD: ${{ secrets.ANYPOINT_PASSWORD }}
