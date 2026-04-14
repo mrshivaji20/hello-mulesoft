@@ -1,4 +1,5 @@
 {
+    "name": "hello-mulesoft",
     "minMuleVersion": "4.11.0",
     "javaSpecificationVersions": [
       "17"
