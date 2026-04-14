@@ -31,15 +31,18 @@ src/
 The repository includes a GitHub Actions workflow (`.github/workflows/deploy.yml`) that automatically:
 
 1. **Triggers** on every push to the `master` branch
-2. **Builds** the application using Maven
-3. **Deploys** to CloudHub using the Mule Maven Plugin
+2. **Authenticates** to Anypoint Exchange for private dependencies
+3. **Builds** the application using Maven
+4. **Deploys** to CloudHub using the Mule Maven Plugin
 
 ### Required Repository Secrets
 
-To enable automatic deployment, configure these repository secrets:
+To enable automatic deployment and private Exchange access, configure these repository secrets:
 
-- `ANYPOINT_CLIENT_ID`: Your Anypoint Platform Client ID
-- `ANYPOINT_CLIENT_SECRET`: Your Anypoint Platform Client Secret
+- `ANYPOINT_USERNAME`: Your Anypoint Platform username (for Exchange authentication)
+- `ANYPOINT_PASSWORD`: Your Anypoint Platform password (for Exchange authentication)
+- `ANYPOINT_CLIENT_ID`: Your Anypoint Platform Client ID (for CloudHub deployment)
+- `ANYPOINT_CLIENT_SECRET`: Your Anypoint Platform Client Secret (for CloudHub deployment)
 
 ### Deployment Configuration
 
@@ -56,6 +59,7 @@ To enable automatic deployment, configure these repository secrets:
 - Java 17
 - Maven 3.6+
 - Anypoint Studio (optional)
+- Access to Anypoint Exchange for private dependencies
 
 ### Building the Application
 
@@ -98,7 +102,31 @@ The application returns masked sample data:
 
 - **Mule Runtime**: 4.11.2
 - **HTTP Connector**: 1.11.1
-- **Common DataWeave Library**: 1.0.0 (for data masking)
+- **Common DataWeave Library**: 1.0.0 (private Exchange dependency for data masking)
+
+## Authentication Setup
+
+### For CI/CD Pipeline
+
+The GitHub Actions workflow creates a Maven `settings.xml` file with authentication for:
+- Anypoint Exchange (for downloading private dependencies)
+- MuleSoft releases repository
+
+### For Local Development
+
+Create a `~/.m2/settings.xml` file with your Anypoint credentials:
+
+```xml
+<settings>
+  <servers>
+    <server>
+      <id>anypoint-exchange-v3</id>
+      <username>YOUR_ANYPOINT_USERNAME</username>
+      <password>YOUR_ANYPOINT_PASSWORD</password>
+    </server>
+  </servers>
+</settings>
+```
 
 ## Deployment
 
@@ -126,9 +154,17 @@ mvn deploy -DmuleDeploy \
 
 1. Create a feature branch
 2. Make your changes
-3. Test locally
+3. Test locally (ensure you have Exchange access)
 4. Create a pull request
 5. Once merged to master, the application will automatically deploy
+
+## Troubleshooting
+
+### Build Failures
+
+- **401 Unauthorized**: Check your Anypoint Exchange credentials in repository secrets
+- **Dependency Resolution**: Ensure `ANYPOINT_USERNAME` and `ANYPOINT_PASSWORD` are correctly set
+- **Deployment Failures**: Verify `ANYPOINT_CLIENT_ID` and `ANYPOINT_CLIENT_SECRET` are valid
 
 ## License
 
