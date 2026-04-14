@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+    <flow name="hello-mulesoft-flow">
+        <http:listener config-ref="HTTP_Listener_config" path="/hello" doc:name="HTTP Listener"/>
+        <set-variable variableName="sampleData" value='#[{"name": "John Doe","email": "john@example.com","password": "secret123","details": {"ssn": "123-45-6789"}}]' doc:name="Store Sample Data"/>
+        <ee:transform doc:name="Transform Message - Mask Sensitive Data">
+            <ee:message>
+                <ee:set-payload>
+                <![CDATA[%dw 2.0
+import commonDWLibrary
+output application/json
+---
+commonDWLibrary::maskSensitiveData(payload, "password,ssn,email")]]>
+            </ee:set-payload>
+            </ee:message>
+        </ee:transform>
+        <logger level="INFO" doc:name="Logger - Original Data" message="Original Data: #[vars.sampleData]"/>
+        <logger level="INFO" doc:name="Logger - Masked Data" message="Masked Data: #[payload]"/>
+    </flow>
+</mule>

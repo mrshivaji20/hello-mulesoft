@@ -1,0 +1,74 @@
+{
+  "basicConstraints": 98,
+  "criticalExtensionOIDs": [
+    "ipsum",
+    "dictum",
+    "venenatis"
+  ],
+  "extendedKeyUsage": [
+    "mi",
+    "Nam"
+  ],
+  "extensions": [
+    {
+      "criticality": true,
+      "oid": "nunc"
+    }
+  ],
+  "issuerAlternativeNames": [
+    {
+      "name": "Aide",
+      "type": 29
+    }
+  ],
+  "issuerDN": {
+    "commonName": "nunc",
+    "name": "Alisia"
+  },
+  "issuerUniqueID": [
+    false,
+    false
+  ],
+  "issuerX500Principal": {
+    "name": "Albina"
+  },
+  "keyUsage": [
+    false,
+    true
+  ],
+  "name": "Chance",
+  "nonCriticalExtensionOIDs": [
+    "sed",
+    "sodales",
+    "erat"
+  ],
+  "notAfter": "2022-05-26",
+  "notBefore": "2025-05-08",
+  "publicKey": {
+    "algorithm": "ut",
+    "modulus": 9,
+    "params": 47,
+    "publicKey": "viverra"
+  },
+  "serialNumber": 38,
+  "serialNumberObject": {
+    "serialNumber": 68
+  },
+  "sigAlgName": "nunc",
+  "sigAlgOID": "sed",
+  "subjectAlternativeNames": [
+    {
+      "name": "Ailene",
+      "type": 74
+    }
+  ],
+  "subjectDN": {
+    "commonName": "lectus",
+    "name": "Damian"
+  },
+  "subjectX500Principal": {
+    "name": "Clarence"
+  },
+  "type": "risus",
+  "version": 61
+}
