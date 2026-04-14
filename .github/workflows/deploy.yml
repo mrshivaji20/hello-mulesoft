@@ -58,8 +58,8 @@ jobs:
     - name: Deploy to CloudHub
       run: |
         mvn deploy -DmuleDeploy \
-          -Danypoint.username=${{ secrets.ANYPOINT_CLIENT_ID }} \
-          -Danypoint.password=${{ secrets.ANYPOINT_CLIENT_SECRET }} \
+          -Danypoint.username=${{ secrets.ANYPOINT_USERNAME }} \
+          -Danypoint.password=${{ secrets.ANYPOINT_PASSWORD }} \
           -DapplicationName=hello-mulesoft-app \
           -Denvironment=Sandbox \
           -Dregion=us-east-2 \
@@ -67,7 +67,5 @@ jobs:
           -Dworkers=1 \
           -DworkerType=MICRO
       env:
-        ANYPOINT_CLIENT_ID: ${{ secrets.ANYPOINT_CLIENT_ID }}
-        ANYPOINT_CLIENT_SECRET: ${{ secrets.ANYPOINT_CLIENT_SECRET }}
         ANYPOINT_USERNAME: ${{ secrets.ANYPOINT_USERNAME }}
         ANYPOINT_PASSWORD: ${{ secrets.ANYPOINT_PASSWORD }}
