@@ -39,10 +39,8 @@ The repository includes a GitHub Actions workflow (`.github/workflows/deploy.yml
 
 To enable automatic deployment and private Exchange access, configure these repository secrets:
 
-- `ANYPOINT_USERNAME`: Your Anypoint Platform username (for Exchange authentication)
-- `ANYPOINT_PASSWORD`: Your Anypoint Platform password (for Exchange authentication)
-- `ANYPOINT_CLIENT_ID`: Your Anypoint Platform Client ID (for CloudHub deployment)
-- `ANYPOINT_CLIENT_SECRET`: Your Anypoint Platform Client Secret (for CloudHub deployment)
+- `ANYPOINT_USERNAME`: Your Anypoint Platform username (used for both Exchange authentication and CloudHub deployment)
+- `ANYPOINT_PASSWORD`: Your Anypoint Platform password (used for both Exchange authentication and CloudHub deployment)
 
 ### Deployment Configuration
 
@@ -111,6 +109,9 @@ The application returns masked sample data:
 The GitHub Actions workflow creates a Maven `settings.xml` file with authentication for:
 - Anypoint Exchange (for downloading private dependencies)
 - MuleSoft releases repository
+- CloudHub deployment
+
+All using the same `ANYPOINT_USERNAME` and `ANYPOINT_PASSWORD` credentials.
 
 ### For Local Development
 
@@ -140,8 +141,8 @@ To deploy manually:
 
 ```bash
 mvn deploy -DmuleDeploy \
-  -Danypoint.username=YOUR_CLIENT_ID \
-  -Danypoint.password=YOUR_CLIENT_SECRET \
+  -Danypoint.username=YOUR_ANYPOINT_USERNAME \
+  -Danypoint.password=YOUR_ANYPOINT_PASSWORD \
   -DapplicationName=hello-mulesoft-app \
   -Denvironment=Sandbox \
   -Dregion=us-east-2 \
@@ -164,7 +165,15 @@ mvn deploy -DmuleDeploy \
 
 - **401 Unauthorized**: Check your Anypoint Exchange credentials in repository secrets
 - **Dependency Resolution**: Ensure `ANYPOINT_USERNAME` and `ANYPOINT_PASSWORD` are correctly set
-- **Deployment Failures**: Verify `ANYPOINT_CLIENT_ID` and `ANYPOINT_CLIENT_SECRET` are valid
+- **Deployment Failures**: Verify `ANYPOINT_USERNAME` and `ANYPOINT_PASSWORD` have CloudHub deployment permissions
+
+### Repository Secrets Setup
+
+In your GitHub repository:
+1. Go to Settings → Secrets and variables → Actions
+2. Add the following repository secrets:
+   - `ANYPOINT_USERNAME`: Your Anypoint Platform username
+   - `ANYPOINT_PASSWORD`: Your Anypoint Platform password
 
 ## License
 
